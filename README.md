@@ -106,7 +106,7 @@ NimbleSim is built on two building blocks:
 
 ### ✅ Actions
 
-Actions are classes which represent some behaviour or intent. While it is valid to build sequences using simple callbacks, actions provide a significantly higher level of control.
+Actions are classes which represent some behaviour or intent. While it is valid to build sequences using lambdas, actions provide a significantly higher level of control.
 
 For example, a Goto action may look like this:
 
@@ -152,7 +152,7 @@ Actions can also implement methods which provide precise control over their exec
 
 But these are optional.
 
-<!-- [Read more about actions](./actions.md) -->
+[Read more about actions](./actions.md)
 
 
 ### 🧱 Sequences
@@ -170,7 +170,7 @@ Nimble.Sim()
 
 Sequences support composing:
 
-- callbacks
+- lambas
 - actions
 - other sequences
 
