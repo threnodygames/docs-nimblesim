@@ -1,9 +1,4 @@
-title: NimbleSim Docs
+title: NimbleSim
 remote_theme: just-the-docs/just-the-docs
-
-nav:
-  - Home: index.md
-  - API Reference:
-    - Sequences: sequences.md
-    - Actions: actions.md
-  - Deep Dive: deepdive.md
+baseurl: ""
+permalink: pretty
