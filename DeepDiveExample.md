@@ -60,7 +60,7 @@ That completes the field behaviour.
 
 ---
 
-## 🏠 Hive Behavior - Send Bee
+## 🏠 Hive behaviour - Send Bee
 
 When the Field calls for a forager, the hive pushes the flower to a stack.
 
@@ -95,7 +95,7 @@ void SendBee()
 }
 ```
 
-### 🏠 Hive Behavior - Forage
+### 🏠 Hive behaviour - Forage
 
 The result of the `Forage` method is passed to the bee as an instruction.
 
@@ -152,7 +152,7 @@ Nimble.Sim()
     .RepeatAllForever();
 ```
 
-## 🌸 Flower Behavior
+## 🌸 Flower behaviour
 
 Flowers return a sequence which describes how they should be harvested.
 
@@ -170,7 +170,7 @@ So a bee (or butterfly, or ant, or ghost??) can just say, "Hey flower, how do I 
 
 ---
 
-## 🐝 Bee Behavior
+## 🐝 Bee behaviour
 
 Finally, the actual bee:
 

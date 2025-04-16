@@ -2,9 +2,9 @@
 
 **Nimble is currently in early-access.**
 
-**NimbleSim** is a component-based behavior orchestration framework for Unity that makes AI feel more like *storytelling* and less like plumbing.
+**NimbleSim** is a component-based behaviour orchestration framework for Unity that makes AI feel more like *storytelling* and less like plumbing.
 
-It lets you define your game agents' behavior using readable, declarative sequences built from atomic actions — just like building Legos. The result is expressive, modular, and infinitely composable behavior code that stays easy to write, easy to understand, and easy to maintain.
+It lets you define your game agents' behaviour using readable, declarative sequences built from atomic actions — just like building Legos. The result is expressive, modular, and infinitely composable behaviour code that stays easy to write, easy to understand, and easy to maintain.
 
 ---
 
@@ -92,10 +92,10 @@ Check out the [deep dive example](./DeepDiveExample.md) to see how NimbleSim can
 
 NimbleSim is:
 
-- 🔍 **Readable** – behavior scripts read like little stories.
-- 🧱 **Composable** – simple atomic actions can be glued together to create layered, reactive behaviors.
-- 🧠 **Declarative** – you say *what* the behavior should do, not *how* to do it.
-- 🌀 **Interruptible & Reactive** – behaviors can respond to changes in the world mid-flow.
+- 🔍 **Readable** – behaviour scripts read like little stories.
+- 🧱 **Composable** – simple atomic actions can be glued together to create layered, reactive behaviours.
+- 🧠 **Declarative** – you say *what* the behaviour should do, not *how* to do it.
+- 🌀 **Interruptible & Reactive** – behaviours can respond to changes in the world mid-flow.
 - 🧰 **Plain C#** – no custom editor or node graph required.
 
 ---
@@ -104,36 +104,17 @@ NimbleSim is:
 
 NimbleSim is built on two building blocks:
 
-### ✅ Atomic Actions
+### ✅ Actions
 
-In the demo above, I used 90% callbacks, and this is a perfectly valid way to use NimbleSim.
+Actions are classes which represent some behaviour or intent. While it is valid to build sequences using simple callbacks, actions provide a significantly higher level of control.
 
-```csharp
-Nimble.Sim().Do(() => Debug.Log("Hello"));
-```
-
-But NimbleSim provides an additional feature with `Actions`.
-
-Actions are atomic behaviour units that can be composed into sequences. They provide optional lifecycle hooks like:
-
-`OnStart` - Runs when the action first becomes active in a sequence
-`OnEnd` - Runs when the action completes & just before the sequence moves to the next step
-`Update` - Runs every frame
-`IsComplete` - Assessed after every update & tells the sequence when to move to the next step
-
-`Get`
-
-Get is the only method that you are required to implement. This is called whenever an action is reloaded (like in a looping sequence).
-
-This method is important because it gives you the ability to decide how you want an action to work on reload. If you return a new instance, then all of the state you stored in the action will be reset. If you return the current reference, then state will be retained.
-
-Here is an example of a simple action that sends an actor to a location:
+For example, a Goto action may look like this:
 
 ```csharp
 public class Goto : Action
 {
   Vector3 destination;
-  float speed = 4.0f;
+  float speed = 6.0f;
 
   public Goto(Vector3 destination)
   {
@@ -161,70 +142,56 @@ public class Goto : Action
 }
 ```
 
-Each lifecycle hook receives a reference to the game object that was passed into the sequence, e.g.:
+This action encapsulates its behaviour (move towards something) and its termination condition (within 0.5f units) into a contained block. And because actions don't need to know about the actor who will be executing it until after instantiation, it only needs to be written once and then can be passed to any sequence at all.
 
-```csharp
-beebehaviour.update(this.gameObject)
-```
+Actions can also implement methods which provide precise control over their execution. For example:
 
-This is what enables sequences to be decoupled from actors right up until execution.
+- IsComplete() - defines a clear termination condtion for the action
+- OnStart() - executed when an action becomes active in a sequence, immediately before the first update call
+- OnDone() - executed immediately after the action's final update call, right before it becomes inactive in a sequence
 
-🧱 Sequences
+But these are optional.
 
-Sequences are chains of actions, conditions, and modifiers:
+<!-- [Read more about actions](./actions.md) -->
+
+
+### 🧱 Sequences
+
+Sequences are a series of steps which are run in some order.
 
 ```csharp
 Nimble.Sim()
-    .Do(new Goto(store))
-    .Until(() => store.HasStock())
-    .Then(() => store.Take(1))
-    .AndRepeatForever();
+    .First(GoToStore())
+    .If(StoreHasMilk())
+      .Then(BuyMilk())
+      .Or(KnockOverTheShelf())
+    .Done()
 ```
 
-This reads like a sentence:
+Sequences support composing:
 
-go to the store → wait until there's stock → take one → repeat forever
+- callbacks
+- actions
+- other sequences
 
-You can define complex behavior flows using just .Do(), .Then(), .Until(), .Repeat(), .If(), .RandomlyDoOneOf(), etc.
+This enables you to create complex & recursive behaviours from small, dedidcated & reusable units.
 
-🔁 Reuse & Composition
+<!-- [Read more about sequences](./sequences.md) -->
 
-Since behaviors are just C# methods returning Sequence, you can also return this sequence to any actor.
-
-```csharp
-public Sequence TakeWhenAvailable()
-{
-    return Nimble.Sim()
-        .Do(new Goto(gameObject))
-        .Until(() => HasStock())
-        .Then(_ => Take(1))
-        .AndThenStop();
-}
-```
-
-Now the actor can just call store.TakeWhenAvailable() and get a plug-and-play sequence tailored to that object. It’s like writing gameplay as modular scripts.
-
-🧪 Demo Included
-
-- A sample scene is included in Assets/Demo/ with:
-- An agent running around randomly and dying
-- A camera following system
-- Repetition
-- Timing
-
-All handled by Nimble. You just write the story.
+## Getting Start & Support
 
 💡 Ideal Use Cases
 
 - AI for cozy sims & emergent gameplay
-- NPC behavior in systemic worlds
+- NPC behaviour in systemic worlds
 - Game jams & prototyping
-- Anywhere behavior readability matters
+- Anywhere behaviour readability matters
 
 🧰 Getting Started
 
 - Add NimbleSim/ to your project (Assets/NimbleSim/)
 - Check out the sample scene in Assets/Demo/Scenes/
+<!-- - Check out the [tutorial](./tutorial.md) -->
 - Create your own Sequences using Nimble.Sim() and plug them into your MonoBehaviours
 
 💬 Support & Feedback
