@@ -1,4 +1,4 @@
 title: NimbleSim
 remote_theme: just-the-docs/just-the-docs
-baseurl: ""
+baseurl: "/docs"
 permalink: pretty
