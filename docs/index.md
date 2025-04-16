@@ -1,3 +1,8 @@
+---
+title: Home
+nav_order: 1
+---
+
 # NimbleSim
 
 **Nimble is currently in early-access.**
